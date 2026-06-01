@@ -14,7 +14,7 @@ CURRENT_HOST=$(hostname -s)
 DIAG_LOG="/tmp/omnitui_diagnostics.txt"
 rm -f "$DIAG_LOG"
 
-whiptail --title "Netzwerk-Diagnose & Doctor" --infobox "Führe automatisierte Latenz- & Routingtests im Subnetz durch..." 8 75
+whiptail --title "Netzwerk-Diagnose & Doctor" --infobox "FÃ¼hre automatisierte Latenz- & Routingtests im Subnetz durch..." 8 75
 
 # Heiler-Status-Variablen
 HEAL_DNS=false
@@ -45,31 +45,31 @@ GATEWAY_IP=""
     echo ""
 } >> "$DIAG_LOG"
 
-# 3. DNS-Auflösungs-Check & Self-Healing Triggers
+# 3. DNS-AuflÃ¶sungs-Check & Self-Healing Triggers
 {
-    echo "--- [3] DNS-Auflösung & Internet-Check ---"
+    echo "--- [3] DNS-AuflÃ¶sung & Internet-Check ---"
     if curl -sI --connect-timeout 3 https://www.google.com >/dev/null; then
         echo "[OK] Internetverbindung steht (HTTPS-Test erfolgreich)."
     else
         echo "[WARNUNG] Keine direkte HTTPS-Verbindung ins Internet."
     fi
     
-    # DNS-Prüfung
+    # DNS-PrÃ¼fung
     if host_out=$(host google.com 2>/dev/null); then
-        echo "[OK] DNS-Auflösung aktiv (google.com gelöst)."
+        echo "[OK] DNS-AuflÃ¶sung aktiv (google.com gelÃ¶st)."
     elif ping -c 1 -W 2 1.1.1.1 >/dev/null 2>&1; then
-        echo "[FEHLER] Ping an 1.1.1.1 erfolgreich, aber DNS-Auflösung fehlgeschlagen!"
+        echo "[FEHLER] Ping an 1.1.1.1 erfolgreich, aber DNS-AuflÃ¶sung fehlgeschlagen!"
         echo "        -> Der 'Doctor' empfiehlt: DNS-Nameserver neu einrichten."
         HEAL_DNS=true
     else
-        echo "[FEHLER] Keine Internetkonnektivität (Weder Ping noch DNS)."
+        echo "[FEHLER] Keine InternetkonnektivitÃ¤t (Weder Ping noch DNS)."
     fi
     echo ""
 } >> "$DIAG_LOG"
 
 # 4. Topologie-Verbindungstests
 {
-    echo "--- [4] Topologie-Konnektivitätstests ---"
+    echo "--- [4] Topologie-KonnektivitÃ¤tstests ---"
     
     ROUTER_HOST=$(python3 "$PARSER" "$CONFIG_PATH" "router:hostname")
     
@@ -80,9 +80,9 @@ GATEWAY_IP=""
             client_ip=$(python3 "$PARSER" "$CONFIG_PATH" "client:$client:ip" | cut -d'/' -f1)
             if [[ -n "$client_ip" ]]; then
                 if ping -c 2 -W 2 "$client_ip" >/dev/null 2>&1; then
-                    echo "  ➜ Client $client ($client_ip): [ONLINE]"
+                    echo "  âžœ Client $client ($client_ip): [ONLINE]"
                 else
-                    echo "  ➜ Client $client ($client_ip): [OFFLINE / UNREACHABLE]"
+                    echo "  âžœ Client $client ($client_ip): [OFFLINE / UNREACHABLE]"
                 fi
             fi
         done
@@ -92,13 +92,13 @@ GATEWAY_IP=""
         GATEWAY_IP="$CLIENT_GW"
         if [[ -n "$CLIENT_GW" ]]; then
             if ping -c 2 -W 2 "$CLIENT_GW" >/dev/null 2>&1; then
-                echo "  ➜ Standard-Gateway $CLIENT_GW: [ONLINE] (Verbindung zum Router steht)."
+                echo "  âžœ Standard-Gateway $CLIENT_GW: [ONLINE] (Verbindung zum Router steht)."
             else
-                echo "  ➜ Standard-Gateway $CLIENT_GW: [OFFLINE] (Keine Verbindung zum Router!)."
+                echo "  âžœ Standard-Gateway $CLIENT_GW: [OFFLINE] (Keine Verbindung zum Router!)."
                 HEAL_GW=true
             fi
         else
-            echo "  [FEHLER] Kein Standard-Gateway in config.yaml für diesen Client deklariert."
+            echo "  [FEHLER] Kein Standard-Gateway in config.yaml fÃ¼r diesen Client deklariert."
         fi
     fi
     echo "============================================================================="
@@ -114,18 +114,18 @@ whiptail --title "System- & Netzwerk-Diagnoseergebnisse" --scrolltext --textbox 
 
 # --- AUTOMATISIERTER SELF-HEALING DOCTOR ---
 
-# A. Doctor Heilung für DNS-Fehler
+# A. Doctor Heilung fÃ¼r DNS-Fehler
 if [[ "$HEAL_DNS" == "true" ]]; then
-    if whiptail --title "🩹 Doctor-Modus: DNS-Heilung" \
-                --yesno "Der Doctor hat ein Nameserver-Problem festgestellt (Ping klappt, DNS-Auflösung scheitert).\n\nMöchten Sie, dass ich jetzt das DNS-Benchmark-Tool starte, um einen funktionierenden Nameserver einzurichten?" 14 75; then
+    if whiptail --title "ðŸ©¹ Doctor-Modus: DNS-Heilung" \
+                --yesno "Der Doctor hat ein Nameserver-Problem festgestellt (Ping klappt, DNS-AuflÃ¶sung scheitert).\n\nMÃ¶chten Sie, dass ich jetzt das DNS-Benchmark-Tool starte, um einen funktionierenden Nameserver einzurichten?" 14 75; then
         bash "$(dirname "$0")/dns_selector.sh"
     fi
 fi
 
-# B. Doctor Heilung für Gateway-Fehler (Interface Reset)
+# B. Doctor Heilung fÃ¼r Gateway-Fehler (Interface Reset)
 if [[ "$HEAL_GW" == "true" && -n "$ACTIVE_CONN" ]]; then
-    if whiptail --title "🩹 Doctor-Modus: Gateway-Heilung" \
-                --yesno "Die Verbindung zu Ihrem Gateway ($GATEWAY_IP) ist unterbrochen.\n\nMöchten Sie, dass ich die aktive Netzwerkschnittstelle '$ACTIVE_CONN' neu starte, um die Verbindung wiederherzustellen?" 14 75; then
+    if whiptail --title "ðŸ©¹ Doctor-Modus: Gateway-Heilung" \
+                --yesno "Die Verbindung zu Ihrem Gateway ($GATEWAY_IP) ist unterbrochen.\n\nMÃ¶chten Sie, dass ich die aktive Netzwerkschnittstelle '$ACTIVE_CONN' neu starte, um die Verbindung wiederherzustellen?" 14 75; then
         
         whiptail --title "Interface-Reset" --infobox "Starte Schnittstelle '$ACTIVE_CONN' neu..." 8 55
         nmcli connection down "$ACTIVE_CONN" >/dev/null 2>&1 || true
@@ -134,9 +134,9 @@ if [[ "$HEAL_GW" == "true" && -n "$ACTIVE_CONN" ]]; then
         
         # Erneuter Schnellcheck
         if ping -c 2 -W 2 "$GATEWAY_IP" >/dev/null 2>&1; then
-            whiptail --title "🩹 Doctor-Heilung erfolgreich" --msgbox "Die Verbindung zum Gateway ($GATEWAY_IP) wurde durch den Schnittstellen-Reset erfolgreich wiederhergestellt!" 10 65
+            whiptail --title "ðŸ©¹ Doctor-Heilung erfolgreich" --msgbox "Die Verbindung zum Gateway ($GATEWAY_IP) wurde durch den Schnittstellen-Reset erfolgreich wiederhergestellt!" 10 65
         else
-            whiptail --title "🩹 Doctor-Heilung fehlgeschlagen" --msgbox "Der Reset der Schnittstelle brachte leider keinen Erfolg. Bitte prüfen Sie Ihre physischen Verbindungen / LAN-Segmente in VMware." 12 70
+            whiptail --title "ðŸ©¹ Doctor-Heilung fehlgeschlagen" --msgbox "Der Reset der Schnittstelle brachte leider keinen Erfolg. Bitte prÃ¼fen Sie Ihre physischen Verbindungen / LAN-Segmente in VMware." 12 70
         fi
     fi
 fi
