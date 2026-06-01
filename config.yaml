@@ -1,0 +1,40 @@
+global:
+  dns_fallback: "1.1.1.1 1.0.0.1"
+  domain: "linux.essentials"
+
+router:
+  hostname: "srv-rocky"
+  interfaces:
+    wan:
+      name: "ens160"
+      mac: "00:0C:29:9E:B3:12"
+    lan_a:
+      name: "ens161"
+      mac: "00:0C:29:9E:B3:26"
+      ip: "172.16.7.33/27"
+    lan_b:
+      name: "ens256"
+      mac: "00:0C:29:9E:B3:1C"
+      ip: "172.16.7.97/27"
+
+clients:
+  - hostname: "srv-deb-01"
+    name: "ens192"
+    mac: "00:0C:29:9E:B3:3A"
+    ip: "172.16.7.42/27"
+    gateway: "172.16.7.33"
+  - hostname: "ws-cachy"
+    name: "ens192"
+    mac: "00:0C:29:9E:B3:4B"
+    ip: "172.16.7.47/27"
+    gateway: "172.16.7.33"
+  - hostname: "srv-deb-02"
+    name: "ens192"
+    mac: "00:0C:29:9E:B3:5C"
+    ip: "172.16.7.111/27"
+    gateway: "172.16.7.97"
+  - hostname: "ws-manjaro"
+    name: "ens192"
+    mac: "00:0C:29:9E:B3:6D"
+    ip: "172.16.7.106/27"
+    gateway: "172.16.7.97"
