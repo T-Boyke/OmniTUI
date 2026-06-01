@@ -2,7 +2,7 @@
 # ==============================================================================
 # Master TUI: OmniTUI.sh
 # Autor: Tobias Boyke
-# Zweck: Zentrale Interaktive Steuerung für Netzwerk, Services & Tweaks (FHD Optimiert)
+# Zweck: Zentrale Interaktive Steuerung fÃ¼r Netzwerk, Services & Tweaks (FHD Optimiert)
 # ==============================================================================
 
 set -euo pipefail
@@ -11,10 +11,10 @@ SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
 CONFIG_PATH="${SCRIPT_DIR}/config.yaml"
 PARSER="${SCRIPT_DIR}/scripts/parse_config.py"
 
-# Automatische Berechtigungserteilung für alle Sub-Skripte beim Start
+# Automatische Berechtigungserteilung fÃ¼r alle Sub-Skripte beim Start
 chmod +x "${SCRIPT_DIR}/OmniTUI.sh" "${SCRIPT_DIR}"/scripts/*.sh "${SCRIPT_DIR}"/scripts/*.py 2>/dev/null || true
 
-# FHD-optimierte Whiptail-Größen
+# FHD-optimierte Whiptail-GrÃ¶ÃŸen
 W_HEIGHT=24
 W_WIDTH=95
 W_LIST=16
@@ -25,7 +25,7 @@ cleanup() {
 }
 trap cleanup EXIT
 
-# 1. Systemprüfungen beim Start
+# 1. SystemprÃ¼fungen beim Start
 bash "${SCRIPT_DIR}/scripts/sys_check.sh"
 
 # Hostname ermitteln
@@ -33,12 +33,12 @@ CURRENT_HOST=$(hostname -s)
 
 while true; do
     CHOICE=$(whiptail --title "OmniTUI (OmniTUI) - Day 17 [FHD Edition]" \
-                      --menu "Zentrales Verwaltungsmenü (Host: $CURRENT_HOST)\nBitte wählen Sie eine Administrations-Aufgabe:" $W_HEIGHT $W_WIDTH $W_LIST \
-                      "1" "Systemprüfungen & Abhängigkeiten (sys_check)" \
+                      --menu "Zentrales VerwaltungsmenÃ¼ (Host: $CURRENT_HOST)\nBitte wÃ¤hlen Sie eine Administrations-Aufgabe:" $W_HEIGHT $W_WIDTH $W_LIST \
+                      "1" "SystemprÃ¼fungen & AbhÃ¤ngigkeiten (sys_check)" \
                       "2" "DNS-Latenz-Benchmark & Selektor (dns_selector)" \
                       "3" "Router-Setup (IP, Forwarding, nftables-NAT)" \
                       "4" "Client-Setup (Schnittstellen & Profiling)" \
-                      "5" "Dienste verwalten & SSH-Härtung (services)" \
+                      "5" "Dienste verwalten & SSH-HÃ¤rtung (services)" \
                       "6" "System Tuning & TCP/BBR Optimierung (tweaks)" \
                       "7" "Uniforme CLI-Tools, ZSH & Aliases (tools)" \
                       "8" "Cronjob Maker TUI (cron_maker)" \
@@ -49,7 +49,7 @@ while true; do
                       "13" "Backup & Wiederherstellungs Manager (backup_manager)" \
                       "14" "YAML-Konfiguration interaktiv editieren (config_editor)" \
                       "15" "YAML-Konfiguration roh anzeigen (config.yaml)" \
-                      "16" "Alles sequenziell ausführen (Voll-Setup)" \
+                      "16" "Alles sequenziell ausfÃ¼hren (Voll-Setup)" \
                       "0" "Beenden" 3>&1 1>&2 2>&3)
 
     if [[ -z "$CHOICE" || "$CHOICE" == "0" ]]; then
@@ -59,7 +59,7 @@ while true; do
     case "$CHOICE" in
         "1")
             bash "${SCRIPT_DIR}/scripts/sys_check.sh"
-            whiptail --title "Check Komplett" --msgbox "Die Systemprüfung war erfolgreich." 8 $W_WIDTH
+            whiptail --title "Check Komplett" --msgbox "Die SystemprÃ¼fung war erfolgreich." 8 $W_WIDTH
             ;;
         "2")
             bash "${SCRIPT_DIR}/scripts/dns_selector.sh"
@@ -105,8 +105,8 @@ while true; do
             whiptail --title "Konfigurations-Struktur (config.yaml)" --scrolltext --textbox "$CONFIG_PATH" 22 85
             ;;
         "16")
-            # Vollständiges sequenzielles Setup ausführen
-            if whiptail --title "Voll-Setup bestätigen" --yesno "Möchten Sie das komplette System-Setup sequenziell ausführen?" 10 70; then
+            # VollstÃ¤ndiges sequenzielles Setup ausfÃ¼hren
+            if whiptail --title "Voll-Setup bestÃ¤tigen" --yesno "MÃ¶chten Sie das komplette System-Setup sequenziell ausfÃ¼hren?" 10 70; then
                 sudo bash "${SCRIPT_DIR}/scripts/sys_check.sh"
                 
                 # Rolle ermitteln
@@ -122,7 +122,7 @@ while true; do
                 sudo bash "${SCRIPT_DIR}/scripts/tools_installer.sh"
                 sudo bash "${SCRIPT_DIR}/scripts/ntp_setup.sh"
                 
-                whiptail --title "Voll-Setup beendet" --msgbox "Alle Skripte wurden erfolgreich nacheinander ausgeführt!" 8 60
+                whiptail --title "Voll-Setup beendet" --msgbox "Alle Skripte wurden erfolgreich nacheinander ausgefÃ¼hrt!" 8 60
             fi
             ;;
     esac

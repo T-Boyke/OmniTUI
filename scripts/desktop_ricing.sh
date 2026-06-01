@@ -16,7 +16,7 @@ USER_HOME=$(eval echo "~$TARGET_USER")
 
 # 1. Desktop-Auswahl
 DESKTOP=$(whiptail --title "r/unixporn Ultimate Ricing Assistent" \
-                    --menu "Wählen Sie Ihre Desktop-Umgebung für ein absolut atemberaubendes, Reddit-würdiges Setup:" $W_HEIGHT $W_WIDTH $W_LIST \
+                    --menu "WÃ¤hlen Sie Ihre Desktop-Umgebung fÃ¼r ein absolut atemberaubendes, Reddit-wÃ¼rdiges Setup:" $W_HEIGHT $W_WIDTH $W_LIST \
                     "GNOME" "GNOME Glassmorphism (Orchis Theme, Tela Circle, Blur my Shell, custom Dock)" \
                     "KDE" "KDE Plasma Cyberpunk (Sweet-KDE, Candy Icons, Kvantum Glass-Transparency)" \
                     "HYPRLAND" "Hyprland Tiling WM (Catppuccin Mocha, Waybar-Glow, Rofi-Menu, Dunst-Shadows)" \
@@ -30,7 +30,7 @@ fi
 # Lokale Ordnerstrukturen anlegen
 sudo -u "$TARGET_USER" mkdir -p "$USER_HOME/.themes" "$USER_HOME/.icons" "$USER_HOME/.config" "$USER_HOME/Pictures/Wallpapers"
 
-# Funktion zum Herunterladen eines legendären, farblich abgestimmten Wallpapers
+# Funktion zum Herunterladen eines legendÃ¤ren, farblich abgestimmten Wallpapers
 download_wallpaper() {
     local theme_name="$1"
     local wp_url=""
@@ -43,7 +43,7 @@ download_wallpaper() {
         wp_url="https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=1920"
     fi
     
-    log_info "Lade legendäres $theme_name-Wallpaper herunter..."
+    log_info "Lade legendÃ¤res $theme_name-Wallpaper herunter..."
     sudo -u "$TARGET_USER" curl -fsSL -o "$wp_path" "$wp_url" || true
     
     # Versuche Wallpaper im System zu setzen
@@ -58,14 +58,14 @@ download_wallpaper() {
 case "$DESKTOP" in
     "GNOME")
         COMPONENTS=$(whiptail --title "GNOME r/unixporn Setup" \
-                               --checklist "Wählen Sie die Komponenten für den ultimativen Glassmorphism-Look:" $W_HEIGHT $W_WIDTH $W_LIST \
+                               --checklist "WÃ¤hlen Sie die Komponenten fÃ¼r den ultimativen Glassmorphism-Look:" $W_HEIGHT $W_WIDTH $W_LIST \
                                "GTK_THEME" "Orchis GTK Theme installieren (Ultra-Modern Rounded)" ON \
                                "ICONS" "Tela Circle Icon Theme (Farblich perfekt abgestimmt)" ON \
-                               "WALLPAPER" "Legendäres Material-Wallpaper automatisch anwenden" ON \
+                               "WALLPAPER" "LegendÃ¤res Material-Wallpaper automatisch anwenden" ON \
                                "EXT_TWEAKS" "Detaillierte Layout-Anpassungen (Blur, transparentes Panel)" ON 3>&1 1>&2 2>&3)
         
         if [[ -n "$COMPONENTS" ]]; then
-            whiptail --title "Ricing läuft" --infobox "Richte GNOME Desktop auf r/unixporn Niveau ein..." 8 60
+            whiptail --title "Ricing lÃ¤uft" --infobox "Richte GNOME Desktop auf r/unixporn Niveau ein..." 8 60
             
             if [[ "$COMPONENTS" =~ "GTK_THEME" ]]; then
                 log_info "Klone und installiere Orchis Theme..."
@@ -91,27 +91,27 @@ case "$DESKTOP" in
                 download_wallpaper "cyberpunk"
             fi
             
-            # Installation von CLI-Visualisierern für den Showcase
+            # Installation von CLI-Visualisierern fÃ¼r den Showcase
             if command -v apt-get >/dev/null 2>&1; then
                 sudo apt-get install -y cava cmatrix >/dev/null 2>&1 || true
             elif command -v dnf >/dev/null 2>&1; then
                 sudo dnf install -y cava cmatrix >/dev/null 2>&1 || true
             fi
             
-            whiptail --title "GNOME Veredelt" --msgbox "Ihr GNOME-System wurde auf r/unixporn Niveau veredelt!\n\n- Orchis GTK Theme angewendet\n- Tela Circle Icons geladen\n- Show-Off Tools installiert: cava & cmatrix\n- Wallpaper eingerichtet\n\nTipp: Öffnen Sie btop, cava und neofetch nebeneinander für den perfekten Screenshot!" 16 75
+            whiptail --title "GNOME Veredelt" --msgbox "Ihr GNOME-System wurde auf r/unixporn Niveau veredelt!\n\n- Orchis GTK Theme angewendet\n- Tela Circle Icons geladen\n- Show-Off Tools installiert: cava & cmatrix\n- Wallpaper eingerichtet\n\nTipp: Ã–ffnen Sie btop, cava und neofetch nebeneinander fÃ¼r den perfekten Screenshot!" 16 75
         fi
         ;;
         
     "KDE")
         COMPONENTS=$(whiptail --title "KDE Plasma r/unixporn Setup" \
-                               --checklist "Wählen Sie die Komponenten für den ultimativen Sweet-Cyberpunk Look:" $W_HEIGHT $W_WIDTH $W_LIST \
+                               --checklist "WÃ¤hlen Sie die Komponenten fÃ¼r den ultimativen Sweet-Cyberpunk Look:" $W_HEIGHT $W_WIDTH $W_LIST \
                                "GLOBAL" "Sweet KDE Global Theme (Leuchtender Neon-Cyberpunk)" ON \
                                "ICONS" "Candy Icons installieren (Extrem stylischer Neon-Style)" ON \
-                               "KVANTUM" "Kvantum Engine einrichten (Transparenz & Unschärfe)" ON \
+                               "KVANTUM" "Kvantum Engine einrichten (Transparenz & UnschÃ¤rfe)" ON \
                                "WALLPAPER" "Aesthetic Neon-City Wallpaper anwenden" ON 3>&1 1>&2 2>&3)
                                
         if [[ -n "$COMPONENTS" ]]; then
-            whiptail --title "KDE Ricing läuft" --infobox "Richte KDE Plasma Cyberpunk-Theme ein..." 8 60
+            whiptail --title "KDE Ricing lÃ¤uft" --infobox "Richte KDE Plasma Cyberpunk-Theme ein..." 8 60
             
             sudo -u "$TARGET_USER" mkdir -p "$USER_HOME/.local/share/plasma/look-and-feel"
             
@@ -135,20 +135,20 @@ case "$DESKTOP" in
         ;;
 
     "HYPRLAND")
-        COMPONENTS=$(whiptail --title "Hyprland r/unixporn Setup (Königsklasse)" \
-                               --checklist "Wählen Sie die Komponenten für das ultimative Catppuccin Mocha Tiling-Setup:" $W_HEIGHT $W_WIDTH $W_LIST \
+        COMPONENTS=$(whiptail --title "Hyprland r/unixporn Setup (KÃ¶nigsklasse)" \
+                               --checklist "WÃ¤hlen Sie die Komponenten fÃ¼r das ultimative Catppuccin Mocha Tiling-Setup:" $W_HEIGHT $W_WIDTH $W_LIST \
                                "WAYBAR" "Custom Waybar Config (Leuchtender Verlauf & runde Ecken)" ON \
                                "ROFI" "Rofi Launcher im edlen Catppuccin-Design" ON \
                                "DUNST" "Modern-Glow Notification Daemon Konfiguration" ON \
                                "WALLPAPER" "Catppuccin Landscapes Wallpaper anwenden" ON 3>&1 1>&2 2>&3)
                                
         if [[ -n "$COMPONENTS" ]]; then
-            whiptail --title "Hyprland Ricing läuft" --infobox "Richte Catppuccin Mocha Strukturen ein..." 8 60
+            whiptail --title "Hyprland Ricing lÃ¤uft" --infobox "Richte Catppuccin Mocha Strukturen ein..." 8 60
             
             sudo -u "$TARGET_USER" mkdir -p "$USER_HOME/.config/hypr" "$USER_HOME/.config/waybar" "$USER_HOME/.config/rofi" "$USER_HOME/.config/dunst"
             
             if [[ "$COMPONENTS" =~ "WAYBAR" ]]; then
-                # Legendäres, leuchtendes Waybar Design schreiben
+                # LegendÃ¤res, leuchtendes Waybar Design schreiben
                 cat << 'EOF' | sudo -u "$TARGET_USER" tee "$USER_HOME/.config/waybar/style.css" >/dev/null
 * {
     border: none;
@@ -194,12 +194,12 @@ EOF
                 sudo pacman -Sy --noconfirm cava cmatrix >/dev/null 2>&1 || true
             fi
             
-            whiptail --title "Hyprland Veredelt" --msgbox "Glückwunsch! Ihr Hyprland Tiling WM Setup wurde auf absolutes r/unixporn Niveau gehoben!\n\n- Custom Waybar mit Catppuccin Mocha aktiv\n- Rofi & Dunst Konfigurationen abgelegt\n- Cava & Cmatrix installiert\n- Catppuccin Evening-Sky Wallpaper geladen\n\nMachen Sie einen Screenshot und holen Sie sich Ihre Reddit-Upvotes ab!" 16 75
+            whiptail --title "Hyprland Veredelt" --msgbox "GlÃ¼ckwunsch! Ihr Hyprland Tiling WM Setup wurde auf absolutes r/unixporn Niveau gehoben!\n\n- Custom Waybar mit Catppuccin Mocha aktiv\n- Rofi & Dunst Konfigurationen abgelegt\n- Cava & Cmatrix installiert\n- Catppuccin Evening-Sky Wallpaper geladen\n\nMachen Sie einen Screenshot und holen Sie sich Ihre Reddit-Upvotes ab!" 16 75
         fi
         ;;
 
     *)
-        # Fallback für XFCE & Cinnamon: Standard Arc-Dark / Adapta Theme mit Papirus Icons
-        whiptail --title "Tools & Icons installiert" --msgbox "Die Standard-Themes (Arc/Adapta) und Icons (Papirus) wurden erfolgreich systemweit installiert und bereitgestellt.\nSie können diese direkt in Ihren Desktop-Einstellungen auswählen." 10 65
+        # Fallback fÃ¼r XFCE & Cinnamon: Standard Arc-Dark / Adapta Theme mit Papirus Icons
+        whiptail --title "Tools & Icons installiert" --msgbox "Die Standard-Themes (Arc/Adapta) und Icons (Papirus) wurden erfolgreich systemweit installiert und bereitgestellt.\nSie kÃ¶nnen diese direkt in Ihren Desktop-Einstellungen auswÃ¤hlen." 10 65
         ;;
 esac

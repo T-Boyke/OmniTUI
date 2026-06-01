@@ -13,7 +13,7 @@ W_LIST=8
 
 # 1. Zeitserver-Auswahl
 NTP_SERVER=$(whiptail --title "NTP Zeitserver-Auswahl" \
-                       --menu "Wählen Sie den primären NTP-Zeitserver-Pool aus (LPIC-1 relevant):" $W_HEIGHT $W_WIDTH $W_LIST \
+                       --menu "WÃ¤hlen Sie den primÃ¤ren NTP-Zeitserver-Pool aus (LPIC-1 relevant):" $W_HEIGHT $W_WIDTH $W_LIST \
                        "de.pool.ntp.org" "Deutschland Pool (Sehr empfohlen)" \
                        "europe.pool.ntp.org" "Europa Pool (Empfohlen)" \
                        "pool.ntp.org" "Globaler NTP-Pool (Standard)" \
@@ -51,10 +51,10 @@ if [[ "$NTP_CLIENT" == "CHRONY" ]]; then
     
     if [[ -f "$CHRONY_CONF" ]]; then
         sudo cp "$CHRONY_CONF" "${CHRONY_CONF}.bak"
-        # Lösche alte Server-Einträge
+        # LÃ¶sche alte Server-EintrÃ¤ge
         sudo sed -i '/^server/d' "$CHRONY_CONF" || true
         sudo sed -i '/^pool/d' "$CHRONY_CONF" || true
-        # Füge neuen Server hinzu
+        # FÃ¼ge neuen Server hinzu
         echo "server $NTP_SERVER iburst" | sudo tee -a "$CHRONY_CONF" >/dev/null
         
         sudo systemctl enable chronyd --now >/dev/null 2>&1 || true
@@ -88,7 +88,7 @@ STATUS_LOG="/tmp/ntp_status.txt"
     echo "Konfigurierter Server: $NTP_SERVER"
     echo ""
     echo "--- System-Zeitstatus ---"
-    timedatectl status || echo "timedatectl nicht verfügbar"
+    timedatectl status || echo "timedatectl nicht verfÃ¼gbar"
     echo ""
     
     if [[ "$NTP_CLIENT" == "CHRONY" ]] && command -v chronyc >/dev/null 2>&1; then

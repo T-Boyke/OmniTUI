@@ -14,15 +14,15 @@ W_LIST=8
 TARGET_USER=${SUDO_USER:-root}
 USER_HOME=$(eval echo "~$TARGET_USER")
 
-# 1. TUI-Selektionsmenü für die Installationen
+# 1. TUI-SelektionsmenÃ¼ fÃ¼r die Installationen
 CHOICES=$(whiptail --title "Zentraler Tools & Shell-Installer" \
-                   --checklist "Wählen Sie die Komponenten aus, die Sie einrichten möchten:" $W_HEIGHT $W_WIDTH $W_LIST \
+                   --checklist "WÃ¤hlen Sie die Komponenten aus, die Sie einrichten mÃ¶chten:" $W_HEIGHT $W_WIDTH $W_LIST \
                    "SYS_TOOLS" "Installiere CLI-Tools (btop, ncdu, micro, bat, ripgrep, fd, fzf, tldr)" ON \
                    "ZSH_SHELL" "ZSH als Standard-Shell & Oh My Zsh aktivieren" ON \
                    "PLUGINS"   "Premium ZSH-Plugins (Highlighting, Suggestions, completions, search tools)" ON \
                    "TERMINALS" "Moderne Terminal-Emulatoren installieren & konfigurieren (Ghostty, Alacritty, Kitty)" ON \
-                   "ALIASES"   "Legendäre Admin-Aliases & Shortcuts (ipbrief, fwlist, ports...)" ON \
-                   "FASTFETCH" "Legendäres Fastfetch-Branding & System-Dashboard" ON 3>&1 1>&2 2>&3)
+                   "ALIASES"   "LegendÃ¤re Admin-Aliases & Shortcuts (ipbrief, fwlist, ports...)" ON \
+                   "FASTFETCH" "LegendÃ¤res Fastfetch-Branding & System-Dashboard" ON 3>&1 1>&2 2>&3)
 
 if [[ -z "$CHOICES" ]]; then
     exit 0
@@ -45,7 +45,7 @@ fi
 
 # 3. ZSH & Oh My Zsh
 if [[ "$CHOICES" =~ "ZSH_SHELL" ]]; then
-    whiptail --title "ZSH-Aktivierung" --infobox "Richte ZSH als Standard-Shell für $TARGET_USER ein..." 8 60
+    whiptail --title "ZSH-Aktivierung" --infobox "Richte ZSH als Standard-Shell fÃ¼r $TARGET_USER ein..." 8 60
     zsh_path=$(command -v zsh)
     sudo chsh -s "$zsh_path" "$TARGET_USER"
 
@@ -93,13 +93,13 @@ fi
 # 5. Moderne Terminal-Emulatoren & Auto-Config
 if [[ "$CHOICES" =~ "TERMINALS" ]]; then
     SELECTED_TERMS=$(whiptail --title "Moderne Terminal-Emulatoren" \
-                              --checklist "Wählen Sie die Terminal-Emulatoren zur Installation & Konfiguration aus:" $W_HEIGHT $W_WIDTH $W_LIST \
+                              --checklist "WÃ¤hlen Sie die Terminal-Emulatoren zur Installation & Konfiguration aus:" $W_HEIGHT $W_WIDTH $W_LIST \
                               "GHOSTTY" "Ghostty (GPU-beschleunigt, Zig, ultra-modern)" ON \
                               "ALACRITTY" "Alacritty (GPU-beschleunigt, Rust, minimalistisch)" ON \
                               "KITTY" "Kitty (GPU-beschleunigt, feature-reich, Tabs/Images)" ON 3>&1 1>&2 2>&3)
                               
     if [[ -n "$SELECTED_TERMS" ]]; then
-        whiptail --title "Terminals werden eingerichtet" --infobox "Installiere und konfiguriere ausgewählte Terminals..." 8 60
+        whiptail --title "Terminals werden eingerichtet" --infobox "Installiere und konfiguriere ausgewÃ¤hlte Terminals..." 8 60
         
         # Installationsversuche
         if [[ "$SELECTED_TERMS" =~ "GHOSTTY" ]]; then
@@ -108,7 +108,7 @@ if [[ "$CHOICES" =~ "TERMINALS" ]]; then
                 sudo pacman -S --noconfirm ghostty >/dev/null 2>&1 || true
             fi
             
-            # Catppuccin Mocha Konfiguration für Ghostty schreiben
+            # Catppuccin Mocha Konfiguration fÃ¼r Ghostty schreiben
             sudo -u "$TARGET_USER" mkdir -p "$USER_HOME/.config/ghostty"
             cat << 'EOF' | sudo -u "$TARGET_USER" tee "$USER_HOME/.config/ghostty/config" >/dev/null
 theme = catppuccin-mocha
@@ -126,7 +126,7 @@ EOF
             elif command -v dnf >/dev/null 2>&1; then sudo dnf install -y alacritty >/dev/null 2>&1 || true;
             elif command -v pacman >/dev/null 2>&1; then sudo pacman -S --noconfirm alacritty >/dev/null 2>&1 || true; fi
             
-            # Catppuccin Mocha Konfiguration für Alacritty (TOML) schreiben
+            # Catppuccin Mocha Konfiguration fÃ¼r Alacritty (TOML) schreiben
             sudo -u "$TARGET_USER" mkdir -p "$USER_HOME/.config/alacritty"
             cat << 'EOF' | sudo -u "$TARGET_USER" tee "$USER_HOME/.config/alacritty/alacritty.toml" >/dev/null
 [window]
@@ -149,7 +149,7 @@ EOF
             elif command -v dnf >/dev/null 2>&1; then sudo dnf install -y kitty >/dev/null 2>&1 || true;
             elif command -v pacman >/dev/null 2>&1; then sudo pacman -S --noconfirm kitty >/dev/null 2>&1 || true; fi
             
-            # Catppuccin Mocha Konfiguration für Kitty schreiben
+            # Catppuccin Mocha Konfiguration fÃ¼r Kitty schreiben
             sudo -u "$TARGET_USER" mkdir -p "$USER_HOME/.config/kitty"
             cat << 'EOF' | sudo -u "$TARGET_USER" tee "$USER_HOME/.config/kitty/kitty.conf" >/dev/null
 background          #1e1e2e
@@ -164,7 +164,7 @@ EOF
     fi
 fi
 
-# 6. Legendäre Aliases
+# 6. LegendÃ¤re Aliases
 if [[ "$CHOICES" =~ "ALIASES" ]]; then
     zshrc_file="$USER_HOME/.zshrc"
     if [[ -f "$zshrc_file" ]]; then
@@ -192,12 +192,12 @@ alias cls="clear"
 alias h="history"
 alias help="tldr"
 
-# Dynamische Aliases für modern CLI-Tools (Debian/RHEL/Arch Kompatibilität)
+# Dynamische Aliases fÃ¼r modern CLI-Tools (Debian/RHEL/Arch KompatibilitÃ¤t)
 if command -v batcat >/dev/null 2>&1; then alias cat="batcat"; elif command -v bat >/dev/null 2>&1; then alias cat="bat"; fi
 if command -v fdfind >/dev/null 2>&1; then alias find="fdfind"; elif command -v fd >/dev/null 2>&1; then alias find="fd"; fi
 if command -v rg >/dev/null 2>&1; then alias grep="rg"; fi
 
-# Führe fastfetch beim Login aus
+# FÃ¼hre fastfetch beim Login aus
 if [ -f ~/.config/fastfetch/config.jsonc ]; then
     fastfetch
 else
@@ -208,9 +208,9 @@ EOF
     fi
 fi
 
-# 7. Legendäres Fastfetch-Branding
+# 7. LegendÃ¤res Fastfetch-Branding
 if [[ "$CHOICES" =~ "FASTFETCH" ]]; then
-    whiptail --title "Fastfetch Branding" --infobox "Erstelle legendäres System-Dashboard..." 8 60
+    whiptail --title "Fastfetch Branding" --infobox "Erstelle legendÃ¤res System-Dashboard..." 8 60
     
     FASTFETCH_CONFIG_DIR="$USER_HOME/.config/fastfetch"
     sudo -u "$TARGET_USER" mkdir -p "$FASTFETCH_CONFIG_DIR"
@@ -230,7 +230,7 @@ if [[ "$CHOICES" =~ "FASTFETCH" ]]; then
         }
     },
     "display": {
-        "separator": "  ➜  ",
+        "separator": "  âžœ  ",
         "color": {
             "keys": "cyan",
             "values": "white"
@@ -240,67 +240,67 @@ if [[ "$CHOICES" =~ "FASTFETCH" ]]; then
         "title",
         {
             "type": "custom",
-            "format": "┌──────────────────────────────────────────────┐",
+            "format": "â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”",
             "outputColor": "blue"
         },
         {
             "type": "os",
-            "key": "  󰣇 OS",
+            "key": "  ó°£‡ OS",
             "format": "{3} ({12})"
         },
         {
             "type": "kernel",
-            "key": "  󰻠 Kernel"
+            "key": "  ó°»  Kernel"
         },
         {
             "type": "uptime",
-            "key": "  󱎫 Uptime"
+            "key": "  ó±Ž« Uptime"
         },
         {
             "type": "packages",
-            "key": "  󰏖 Packages"
+            "key": "  ó°– Packages"
         },
         {
             "type": "shell",
-            "key": "  󱆃 Shell"
+            "key": "  ó±†ƒ Shell"
         },
         {
             "type": "custom",
-            "format": "├────── HARDWARE STATUS ───────────────────────┤",
+            "format": "â”œâ”€â”€â”€â”€â”€â”€ HARDWARE STATUS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤",
             "outputColor": "blue"
         },
         {
             "type": "cpu",
-            "key": "  󰘚 CPU",
+            "key": "  ó°˜š CPU",
             "format": "{1} ({5} Cores)"
         },
         {
             "type": "memory",
-            "key": "  󰍛 Memory",
+            "key": "  ó°› Memory",
             "format": "{1} / {2} ({3})"
         },
         {
             "type": "disk",
-            "key": "  󰋊 Disk",
+            "key": "  ó°‹Š Disk",
             "format": "{1} / {2} ({3})"
         },
         {
             "type": "custom",
-            "format": "├────── NETWORK & TOPOLOGY ────────────────────┤",
+            "format": "â”œâ”€â”€â”€â”€â”€â”€ NETWORK & TOPOLOGY â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤",
             "outputColor": "blue"
         },
         {
             "type": "localip",
-            "key": "  󰩟 IPv4",
+            "key": "  ó°©Ÿ IPv4",
             "showLoop": false
         },
         {
             "type": "dns",
-            "key": "  󰅍 DNS"
+            "key": "  ó°… DNS"
         },
         {
             "type": "custom",
-            "format": "└──────────────────────────────────────────────┘",
+            "format": "â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜",
             "outputColor": "blue"
         },
         "break",

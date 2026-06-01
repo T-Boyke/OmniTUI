@@ -14,31 +14,31 @@ W_LIST=8
 TARGET_USER=${SUDO_USER:-root}
 USER_HOME=$(eval echo "~$TARGET_USER")
 
-# 1. Menü zur Auswahl der System-Tweaks
+# 1. MenÃ¼ zur Auswahl der System-Tweaks
 TWEAKS=$(whiptail --title "System Tuning & Optimierungen" \
-                  --checklist "Wählen Sie die gewünschten Kernel- und Netzwerk-Tweaks:" $W_HEIGHT $W_WIDTH $W_LIST \
+                  --checklist "WÃ¤hlen Sie die gewÃ¼nschten Kernel- und Netzwerk-Tweaks:" $W_HEIGHT $W_WIDTH $W_LIST \
                   "BBR" "Google BBR Congestion Control (TCP Staukontrolle)" ON \
-                  "TCP" "TCP/IP Buffer Tuning (Performance für hohe Bandbreiten)" ON \
+                  "TCP" "TCP/IP Buffer Tuning (Performance fÃ¼r hohe Bandbreiten)" ON \
                   "FASTOPEN" "TCP Fast Open (Reduziert Verbindungs-Overhead)" ON \
                   "DNSCACHE" "Lokalen DNS-Caching Resolver (systemd-resolved/dnsmasq)" ON \
-                  "LIMITS" "Systemlimits erhöhen (maximale offene Dateien in limits.conf)" ON 3>&1 1>&2 2>&3)
+                  "LIMITS" "Systemlimits erhÃ¶hen (maximale offene Dateien in limits.conf)" ON 3>&1 1>&2 2>&3)
 
-# 2. Menü zur Auswahl des Standard-Editors
+# 2. MenÃ¼ zur Auswahl des Standard-Editors
 SELECTED_EDITOR=$(whiptail --title "Standard-Editor (EDITOR)" \
-                            --menu "Wählen Sie den standardmäßigen CLI-Editor für ZSH und Bash:" $W_HEIGHT $W_WIDTH $W_LIST \
-                            "micro" "Modern, intuitiv, Mausunterstützung & Shortcuts (Empfohlen)" \
+                            --menu "WÃ¤hlen Sie den standardmÃ¤ÃŸigen CLI-Editor fÃ¼r ZSH und Bash:" $W_HEIGHT $W_WIDTH $W_LIST \
+                            "micro" "Modern, intuitiv, MausunterstÃ¼tzung & Shortcuts (Empfohlen)" \
                             "nano" "Einfach, minimalistisch, Standard-Editor" \
                             "vim" "Erweiterter vi-Editor mit Syntax-Highlighting" \
                             "vi" "Klassischer, ressourcenschonender vi-Standard" 3>&1 1>&2 2>&3)
 
 # Verarbeiten der System-Tweaks
 if [[ -n "$TWEAKS" ]]; then
-    # Erstelle temporäre sysctl Datei
+    # Erstelle temporÃ¤re sysctl Datei
     SYSCTL_CONF="/etc/sysctl.d/99-network-tweaks.conf"
     sudo mkdir -p /etc/sysctl.d
     sudo rm -f "$SYSCTL_CONF"
 
-    whiptail --title "Tuning läuft" --infobox "Die ausgewählten Optimierungen werden angewendet..." 8 50
+    whiptail --title "Tuning lÃ¤uft" --infobox "Die ausgewÃ¤hlten Optimierungen werden angewendet..." 8 50
 
     # BBR
     if [[ "$TWEAKS" =~ "BBR" ]]; then
@@ -113,7 +113,7 @@ fi
 if [[ -n "$SELECTED_EDITOR" ]]; then
     whiptail --title "Editor wird konfiguriert" --infobox "Setze $SELECTED_EDITOR als System-Standard..." 8 50
     
-    # Entferne alte Einträge falls vorhanden in .bashrc und .zshrc
+    # Entferne alte EintrÃ¤ge falls vorhanden in .bashrc und .zshrc
     for rc_file in "$USER_HOME/.bashrc" "$USER_HOME/.zshrc"; do
         if [[ -f "$rc_file" ]]; then
             sudo -u "$TARGET_USER" sed -i '/export EDITOR=/d' "$rc_file" || true
@@ -129,4 +129,4 @@ if [[ -n "$SELECTED_EDITOR" ]]; then
 fi
 
 # Abschluss-Meldung
-whiptail --title "Optimierung abgeschlossen" --msgbox "Die Anpassungen wurden erfolgreich durchgeführt!\n\n- System-Tweaks wurden geladen.\n- Standard-Editor für Bash/Zsh wurde auf '$SELECTED_EDITOR' gesetzt." $W_HEIGHT $W_WIDTH
+whiptail --title "Optimierung abgeschlossen" --msgbox "Die Anpassungen wurden erfolgreich durchgefÃ¼hrt!\n\n- System-Tweaks wurden geladen.\n- Standard-Editor fÃ¼r Bash/Zsh wurde auf '$SELECTED_EDITOR' gesetzt." $W_HEIGHT $W_WIDTH

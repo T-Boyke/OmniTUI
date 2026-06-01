@@ -14,11 +14,11 @@ CURRENT_HOST=$(hostname -s)
 ROUTER_HOST=$(python3 "$PARSER" "$CONFIG_PATH" "router:hostname")
 
 if [[ "$CURRENT_HOST" == "$ROUTER_HOST" ]]; then
-    whiptail --title "Fehler: Host-Rolle" --msgbox "Dieses Skript ist nur für Client-VMs vorgesehen.\nDieser Host ist als Router konfiguriert!" 10 55
+    whiptail --title "Fehler: Host-Rolle" --msgbox "Dieses Skript ist nur fÃ¼r Client-VMs vorgesehen.\nDieser Host ist als Router konfiguriert!" 10 55
     exit 1
 fi
 
-whiptail --title "Client-Konfiguration" --infobox "Lese Netzwerkeinstellungen für $CURRENT_HOST aus..." 8 50
+whiptail --title "Client-Konfiguration" --infobox "Lese Netzwerkeinstellungen fÃ¼r $CURRENT_HOST aus..." 8 50
 
 # Statische Werte aus YAML parsen
 CLIENT_IP=$(python3 "$PARSER" "$CONFIG_PATH" "client:$CURRENT_HOST:ip")
@@ -27,13 +27,13 @@ CLIENT_MAC=$(python3 "$PARSER" "$CONFIG_PATH" "client:$CURRENT_HOST:mac")
 CLIENT_NAME=$(python3 "$PARSER" "$CONFIG_PATH" "client:$CURRENT_HOST:name")
 DNS_SERVER=$(python3 "$PARSER" "$CONFIG_PATH" "global:dns_fallback")
 
-# Fallback falls temporär DNS ausgewählt wurde
+# Fallback falls temporÃ¤r DNS ausgewÃ¤hlt wurde
 if [[ -f /tmp/selected_dns.txt ]]; then
     DNS_SERVER=$(cat /tmp/selected_dns.txt)
 fi
 
 if [[ -z "$CLIENT_IP" || -z "$CLIENT_GW" ]]; then
-    whiptail --title "Fehler: Konfiguration fehlt" --msgbox "Für den Hostname '$CURRENT_HOST' wurden keine Netzwerkeinstellungen in config.yaml gefunden!" 10 55
+    whiptail --title "Fehler: Konfiguration fehlt" --msgbox "FÃ¼r den Hostname '$CURRENT_HOST' wurden keine Netzwerkeinstellungen in config.yaml gefunden!" 10 55
     exit 1
 fi
 
@@ -75,7 +75,7 @@ nmcli con add type ethernet con-name "$INTERFACE" ifname "$INTERFACE" ipv4.addre
 nmcli con down "$INTERFACE" || true
 nmcli con up "$INTERFACE"
 
-# 2. nftables für Client schreiben (einfache Firewall)
+# 2. nftables fÃ¼r Client schreiben (einfache Firewall)
 sudo systemctl stop firewalld >/dev/null 2>&1 || true
 sudo systemctl disable firewalld >/dev/null 2>&1 || true
 

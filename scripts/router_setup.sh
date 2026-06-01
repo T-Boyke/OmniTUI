@@ -10,16 +10,16 @@ set -euo pipefail
 # Lade gemeinsame Variablen und Funktionen
 source "$(dirname "$(readlink -f "$0")")/common.sh"
 
-# Überprüfen ob Router
+# ÃœberprÃ¼fen ob Router
 CURRENT_HOST=$(hostname -s)
 ROUTER_HOST=$(python3 "$PARSER" "$CONFIG_PATH" "router:hostname")
 
 if [[ "$CURRENT_HOST" != "$ROUTER_HOST" ]]; then
-    whiptail --title "Fehler: Host-Rolle" --msgbox "Dieses Skript kann nur auf dem Router ($ROUTER_HOST) ausgeführt werden.\nDer aktuelle Hostname lautet: $CURRENT_HOST" 10 55
+    whiptail --title "Fehler: Host-Rolle" --msgbox "Dieses Skript kann nur auf dem Router ($ROUTER_HOST) ausgefÃ¼hrt werden.\nDer aktuelle Hostname lautet: $CURRENT_HOST" 10 55
     exit 1
 fi
 
-whiptail --title "Router-Konfiguration" --infobox "Richte Schnittstellen und Forwarding für Router ein..." 8 50
+whiptail --title "Router-Konfiguration" --infobox "Richte Schnittstellen und Forwarding fÃ¼r Router ein..." 8 50
 
 # Werte parsen
 DNS_SERVER=$(python3 "$PARSER" "$CONFIG_PATH" "global:dns_fallback")
@@ -53,7 +53,7 @@ nmcli con up ens256
 sysctl -w net.ipv4.ip_forward=1 >/dev/null
 echo "net.ipv4.ip_forward = 1" | sudo tee /etc/sysctl.d/99-ip-forward.conf >/dev/null
 
-# 3. nftables Firewall schreiben (spezifisch für Router)
+# 3. nftables Firewall schreiben (spezifisch fÃ¼r Router)
 sudo systemctl stop firewalld >/dev/null 2>&1 || true
 sudo systemctl disable firewalld >/dev/null 2>&1 || true
 
@@ -84,4 +84,4 @@ EOF
 
 sudo systemctl enable nftables --now >/dev/null 2>&1 || true
 
-whiptail --title "Router-Erfolg" --msgbox "Der Router $ROUTER_HOST wurde erfolgreich eingerichtet!\n\n- Schnittstellen konfiguriert\n- Kernel IP-Forwarding aktiv\n- nftables NAT-Masquerading läuft" 12 55
+whiptail --title "Router-Erfolg" --msgbox "Der Router $ROUTER_HOST wurde erfolgreich eingerichtet!\n\n- Schnittstellen konfiguriert\n- Kernel IP-Forwarding aktiv\n- nftables NAT-Masquerading lÃ¤uft" 12 55

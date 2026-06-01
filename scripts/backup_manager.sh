@@ -15,7 +15,7 @@ BACKUP_DIR="/var/backups/omnitui"
 sudo mkdir -p "$BACKUP_DIR"
 
 ACTION=$(whiptail --title "Backup & Wiederherstellungs Manager" \
-                  --menu "Wählen Sie eine Backup-Aktion aus:" $W_HEIGHT $W_WIDTH $W_LIST \
+                  --menu "WÃ¤hlen Sie eine Backup-Aktion aus:" $W_HEIGHT $W_WIDTH $W_LIST \
                   "CREATE" "Neues System-Backup erstellen" \
                   "RESTORE" "Bestehendes System-Backup wiederherstellen" \
                   "LIST" "Vorhandene Backups auflisten" 3>&1 1>&2 2>&3)
@@ -55,7 +55,7 @@ case "$ACTION" in
         
         # Tarball erstellen
         if sudo tar -czf "$FILE_PATH" "${VALID_PATHS[@]}" 2>/dev/null; then
-            whiptail --title "Backup-Erfolg" --msgbox "System-Backup erfolgreich angelegt!\n\nDatei: $FILE_PATH\nSicherungsgröße: $(sudo du -sh "$FILE_PATH" | awk '{print $1}')" 12 65
+            whiptail --title "Backup-Erfolg" --msgbox "System-Backup erfolgreich angelegt!\n\nDatei: $FILE_PATH\nSicherungsgrÃ¶ÃŸe: $(sudo du -sh "$FILE_PATH" | awk '{print $1}')" 12 65
         else
             whiptail --title "Backup-Fehler" --msgbox "Fehler beim Erstellen des tar.gz-Archivs!" 10 55
         fi
@@ -73,21 +73,21 @@ case "$ACTION" in
         MENU_OPTIONS=()
         for b in "${BACKUPS[@]}"; do
             size=$(sudo du -sh "${BACKUP_DIR}/$b" | awk '{print $1}')
-            MENU_OPTIONS+=("$b" "Sicherungsarchiv (Größe: $size)")
+            MENU_OPTIONS+=("$b" "Sicherungsarchiv (GrÃ¶ÃŸe: $size)")
         done
         
         SELECTED_BACKUP=$(whiptail --title "Backup wiederherstellen" \
-                                   --menu "Wählen Sie das wiederherzustellende Backup aus:" $W_HEIGHT $W_WIDTH $W_LIST \
+                                   --menu "WÃ¤hlen Sie das wiederherzustellende Backup aus:" $W_HEIGHT $W_WIDTH $W_LIST \
                                    "${MENU_OPTIONS[@]}" 3>&1 1>&2 2>&3)
                                    
         if [[ -n "$SELECTED_BACKUP" ]]; then
-            if whiptail --title "Wiederherstellung bestätigen" \
-                        --yesno "Möchten Sie das Backup '$SELECTED_BACKUP' wirklich wiederherstellen?\nAlle aktuellen Konfigurationen werden überschrieben!" 12 70; then
+            if whiptail --title "Wiederherstellung bestÃ¤tigen" \
+                        --yesno "MÃ¶chten Sie das Backup '$SELECTED_BACKUP' wirklich wiederherstellen?\nAlle aktuellen Konfigurationen werden Ã¼berschrieben!" 12 70; then
                 
-                whiptail --title "Wiederherstellung läuft" --infobox "Entpacke Konfigurationen..." 8 60
+                whiptail --title "Wiederherstellung lÃ¤uft" --infobox "Entpacke Konfigurationen..." 8 60
                 
                 if sudo tar -xzf "${BACKUP_DIR}/${SELECTED_BACKUP}" -C / 2>/dev/null; then
-                    # SSH und nftables neu starten falls Konfig zurückgespielt
+                    # SSH und nftables neu starten falls Konfig zurÃ¼ckgespielt
                     sudo systemctl restart sshd || sudo systemctl restart ssh || true
                     sudo systemctl restart nftables || true
                     
