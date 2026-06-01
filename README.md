@@ -1,20 +1,22 @@
-# 🖥️ OmniTUI (OmniTUI) - Tag 17
+# 🖥️ OmniTUI — Modulare Linux-Administration per Terminal UI
 
-![Linux Essentials Day 17 Header](./header.png)
-
-> **Entwickler & Administrator:** Tobias Boyke  
-> **Status:** 🚀 Vollständig Einsatzbereit & Getestet  
+> **Entwickler & Administrator:** Tobias Boyke
+> **Status:** 🚀 Vollständig Einsatzbereit & Getestet
 > **Kompatibilität:** ![Rocky Linux](https://img.shields.io/badge/Rocky%20Linux-8%20%7C%209-blue) ![Debian](https://img.shields.io/badge/Debian-12%20%7C%2013-red) ![Arch Linux](https://img.shields.io/badge/Arch%20Linux-Latest-cyan)
 
 ---
 
 ## 📖 Einführung & Vision
 
-**OmniTUI** (OmniTUI) ist ein hochgradig modulares, interaktives und professionelles Administrations- und Netzwerkeinrichtungs-System auf Basis von **Whiptail TUI**. Es transformiert die monolithische Automatisierung von Tag 16 in eine zukunftsweisende, benutzerfreundliche und fehlerresistente Suite.
+**OmniTUI** ist ein hochgradig modulares, interaktives und professionelles Administrations- und Netzwerkeinrichtungs-System auf Basis von **Whiptail TUI**. Es transformiert komplexe Linux-Systemadministration in eine benutzerfreundliche, fehlerresistente Terminal-Oberfläche.
 
 Das System steuert die gesamte Netzwerkarchitektur (Zentrales Gateway, IP-Forwarding, `nftables` NAT-Masquerading, statisches Routing auf Clients) und erlaubt die Zuweisung von Geräten über ihre spezifischen **ENS-Namen** oder **physikalischen MAC-Adressen** direkt aus der YAML-Datei.
 
 Zusätzlich integriert die Suite **fortgeschrittene Kernel-Tweaks** (Google BBR, TCP Window-Size-Scaling), lokale **DNS-Caching-Resolver**, einen **interaktiven Cronjob-Builder**, ein **Konnektivitäts-Diagnosewerkzeug**, einen **Backup & Restore Manager** sowie eine **NTP-Zeitsynchronisation** für absolut zeitsynchronisierte Protokolle und Logfiles im gesamten Subnetz.
+
+### 🧬 Herkunft
+
+OmniTUI hat sich aus dem **Day 17**-Modul des [Linux-Essentials](https://github.com/BitLC-NE-2025-2026/Linux-Essentials/tree/main/Day_17)-Kursprojekts entwickelt und ist seitdem als **eigenständiges Projekt** weiterentwickelt worden. Das Original-Kursmodul diente als Grundlage für die Architektur und die ersten Module — OmniTUI erweitert und verbessert dieses Fundament seither kontinuierlich.
 
 ---
 
@@ -31,9 +33,11 @@ Zusätzlich integriert die Suite **fortgeschrittene Kernel-Tweaks** (Google BBR,
   - [7. System- & Netzwerk-Diagnose (diagnostics.sh)](#7-system---netzwerk-diagnose-diagnosticssh)
   - [8. NTP Zeitsynchronisation & Server (ntp_setup.sh)](#8-ntp-zeitsynchronisation--server-ntp_setupsh)
   - [9. Backup & Restore Manager (backup_manager.sh)](#9-backup--restore-manager-backup_managersh)
-- [🚀 Ausführung & Live-Betrieb](#-ausführung--live-betrieb)
+  - [10. Subnetz-Scanner (subnet_scanner.sh)](#10-subnetz-scanner--host-discovery-subnet_scannersh)
+  - [11. Konfigurations-Editor (config_editor.sh)](#11-interaktiver-konfigurations-editor-config_editorsh)
+  - [12. Gemeinsame Bibliothek (common.sh)](#12-gemeinsame-system-bibliothek-commonsh)
+- [🚀 Installation & Ausführung](#-installation--ausführung)
 - [🧠 LPIC-1 Relevanz & Wissenstest](#-lpic-1-relevanz--wissenstest)
-- [🔗 Zurück zur Übersicht](#-zurück-zur-übersicht)
 
 ---
 
@@ -93,7 +97,7 @@ graph TD
 
 ## ⚙️ Zentrale YAML-Konfiguration (`config.yaml`)
 
-Die Datei [config.yaml](file:///c:/Users/Tobia/Desktop/cSharpRepo/Linux-Essentials/Day_17/config.yaml) dient als Single Source of Truth für die gesamte Netzwerk-Topologie.
+Die Datei `config.yaml` dient als Single Source of Truth für die gesamte Netzwerk-Topologie.
 
 ```yaml
 global:
@@ -217,11 +221,13 @@ clients:
 
 ---
 
-## 🚀 Ausführung & Live-Betrieb
-
-Stellen Sie sicher, dass Sie sich im Verzeichnis `Day_17` befinden. Sie können das Hauptmenü direkt starten:
+## 🚀 Installation & Ausführung
 
 ```bash
+# Repository klonen
+git clone https://github.com/T-Boyke/OmniTUI.git
+cd OmniTUI
+
 # Hauptsteuerung starten (Rechte werden automatisch vergeben!)
 bash OmniTUI.sh
 ```
@@ -236,7 +242,7 @@ bash OmniTUI.sh
 
 ## 🧠 LPIC-1 Relevanz & Wissenstest
 
-Dieses Modul deckt wesentliche Aspekte der LPIC-Prüfungsinhalte ab und festigt Ihr Wissen zur Systemadministration:
+Dieses Projekt deckt wesentliche Aspekte der LPIC-Prüfungsinhalte ab und festigt Ihr Wissen zur Systemadministration:
 
 <details>
 <summary><b>Fragen zu DNS-Konfiguration & Live-Override (Klicken zum Ausklappen)</b></summary>
@@ -269,17 +275,22 @@ Dieses Modul deckt wesentliche Aspekte der LPIC-Prüfungsinhalte ab und festigt 
 
 6. **Wie lautet die Cron-Syntax, um ein Skript jeden Montag um exakt 04:30 Uhr morgens auszuführen?**
    <details><summary>Antwort</summary>Die Syntax lautet:
-   `30 4 * * 1 /pfad/zum/skript.sh`  
+   `30 4 * * 1 /pfad/zum/skript.sh`
    *(30 = Minute, 4 = Stunde, * = Tag des Monats, * = Monat, 1 = Wochentag [Montag])*</details>
 
 </details>
 
 ---
 
-## 🔗 Zurück zur Übersicht
+## 📜 Lizenz
 
-* **Tag 16 (Routing & NAT):** [⬅️ Netzwerk-Routing & Forwarding](../Day_16/README.md)
-* **Master-Repository:** [🌌 Zurück zum Master-Repository](../README.md)
+Dieses Projekt steht unter der [GNU General Public License v3.0](LICENSE).
+
+---
+
+## 🔗 Ursprung & Weiterführendes
+
+> Dieses Projekt hat sich aus dem **Day 17**-Modul des [Linux-Essentials](https://github.com/BitLC-NE-2025-2026/Linux-Essentials/tree/main/Day_17)-Kursprojekts entwickelt und wird seitdem als eigenständiges Repository gepflegt und erweitert.
 
 ---
 *Erstellt & gepflegt von Tobias Boyke, Juni 2026.*
