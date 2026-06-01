@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # Autor: Tobias Boyke
-# Zweck: Sicheres, robustes Schreiben von Werten in die config.yaml ohne externe AbhÃ¤ngigkeiten
+# Zweck: Sicheres, robustes Schreiben von Werten in die config.yaml ohne externe Abhängigkeiten
 
 import sys
 import os

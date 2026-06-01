@@ -12,19 +12,19 @@ source "$(dirname "$(readlink -f "$0")")/common.sh"
 W_LIST=10
 
 while true; do
-    # Aktuelle wichtige Werte auslesen fÃ¼r Anzeige im MenÃ¼
+    # Aktuelle wichtige Werte auslesen für Anzeige im Menü
     DNS_FALLBACK=$(python3 "$PARSER" "$CONFIG_PATH" "global:dns_fallback")
     ROUTER_HOST=$(python3 "$PARSER" "$CONFIG_PATH" "router:hostname")
     
     CHOICE=$(whiptail --title "Zentraler YAML-Konfigurations-Editor" \
-                      --menu "WÃ¤hlen Sie einen Konfigurationsparameter aus, den Sie live anpassen mÃ¶chten:" $W_HEIGHT $W_WIDTH $W_LIST \
+                      --menu "Wählen Sie einen Konfigurationsparameter aus, den Sie live anpassen möchten:" $W_HEIGHT $W_WIDTH $W_LIST \
                       "1" "Globaler DNS-Fallback (Aktuell: $DNS_FALLBACK)" \
                       "2" "Router Hostname (Aktuell: $ROUTER_HOST)" \
                       "3" "Client srv-deb-01 IP anpassen" \
                       "4" "Client ws-cachy IP anpassen" \
                       "5" "Client srv-deb-02 IP anpassen" \
                       "6" "Client ws-manjaro IP anpassen" \
-                      "0" "ZurÃ¼ck zum HauptmenÃ¼" 3>&1 1>&2 2>&3)
+                      "0" "Zurück zum Hauptmenü" 3>&1 1>&2 2>&3)
 
     if [[ -z "$CHOICE" || "$CHOICE" == "0" ]]; then
         break
@@ -40,7 +40,7 @@ while true; do
             ;;
         "2")
             NEW_ROUTER=$(whiptail --title "Router Hostname anpassen" \
-                                  --inputbox "Geben Sie den neuen Hostname fÃ¼r den Router ein:" 10 70 "$ROUTER_HOST" 3>&1 1>&2 2>&3)
+                                  --inputbox "Geben Sie den neuen Hostname für den Router ein:" 10 70 "$ROUTER_HOST" 3>&1 1>&2 2>&3)
             if [[ -n "$NEW_ROUTER" ]]; then
                 python3 "$UPDATER" "$CONFIG_PATH" "router:hostname" "$NEW_ROUTER"
             fi
