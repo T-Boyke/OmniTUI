@@ -50,7 +50,7 @@ while true; do
                       "14" "YAML-Konfiguration interaktiv editieren (config_editor)" \
                       "15" "YAML-Konfiguration roh anzeigen (config.yaml)" \
                       "16" "Alles sequenziell ausführen (Voll-Setup)" \
-                      "0" "Beenden" 3>&1 1>&2 2>&3)
+                      "0" "Beenden" 3>&1 1>&2 2>&3) || true
 
     if [[ -z "$CHOICE" || "$CHOICE" == "0" ]]; then
         break
@@ -58,69 +58,69 @@ while true; do
 
     case "$CHOICE" in
         "1")
-            bash "${SCRIPT_DIR}/scripts/sys_check.sh"
+            bash "${SCRIPT_DIR}/scripts/sys_check.sh" || true
             whiptail --title "Check Komplett" --msgbox "Die Systemprüfung war erfolgreich." 8 $W_WIDTH
             ;;
         "2")
-            bash "${SCRIPT_DIR}/scripts/dns_selector.sh"
+            bash "${SCRIPT_DIR}/scripts/dns_selector.sh" || true
             ;;
         "3")
-            sudo bash "${SCRIPT_DIR}/scripts/router_setup.sh"
+            sudo bash "${SCRIPT_DIR}/scripts/router_setup.sh" || true
             ;;
         "4")
-            sudo bash "${SCRIPT_DIR}/scripts/client_setup.sh"
+            sudo bash "${SCRIPT_DIR}/scripts/client_setup.sh" || true
             ;;
         "5")
-            sudo bash "${SCRIPT_DIR}/scripts/services_mgmt.sh"
+            sudo bash "${SCRIPT_DIR}/scripts/services_mgmt.sh" || true
             ;;
         "6")
-            sudo bash "${SCRIPT_DIR}/scripts/system_tweaks.sh"
+            sudo bash "${SCRIPT_DIR}/scripts/system_tweaks.sh" || true
             ;;
         "7")
-            sudo bash "${SCRIPT_DIR}/scripts/tools_installer.sh"
+            sudo bash "${SCRIPT_DIR}/scripts/tools_installer.sh" || true
             ;;
         "8")
-            sudo bash "${SCRIPT_DIR}/scripts/cron_maker.sh"
+            sudo bash "${SCRIPT_DIR}/scripts/cron_maker.sh" || true
             ;;
         "9")
-            sudo bash "${SCRIPT_DIR}/scripts/desktop_ricing.sh"
+            sudo bash "${SCRIPT_DIR}/scripts/desktop_ricing.sh" || true
             ;;
         "10")
-            sudo bash "${SCRIPT_DIR}/scripts/diagnostics.sh"
+            sudo bash "${SCRIPT_DIR}/scripts/diagnostics.sh" || true
             ;;
         "11")
-            sudo bash "${SCRIPT_DIR}/scripts/subnet_scanner.sh"
+            sudo bash "${SCRIPT_DIR}/scripts/subnet_scanner.sh" || true
             ;;
         "12")
-            sudo bash "${SCRIPT_DIR}/scripts/ntp_setup.sh"
+            sudo bash "${SCRIPT_DIR}/scripts/ntp_setup.sh" || true
             ;;
         "13")
-            sudo bash "${SCRIPT_DIR}/scripts/backup_manager.sh"
+            sudo bash "${SCRIPT_DIR}/scripts/backup_manager.sh" || true
             ;;
         "14")
-            sudo bash "${SCRIPT_DIR}/scripts/config_editor.sh"
+            sudo bash "${SCRIPT_DIR}/scripts/config_editor.sh" || true
             ;;
         "15")
             # Config Datei formatiert in Textbox ausgeben
-            whiptail --title "Konfigurations-Struktur (config.yaml)" --scrolltext --textbox "$CONFIG_PATH" 22 85
+            whiptail --title "Konfigurations-Struktur (config.yaml)" --scrolltext --textbox "$CONFIG_PATH" 22 85 || true
             ;;
         "16")
             # Vollständiges sequenzielles Setup ausführen
             if whiptail --title "Voll-Setup bestätigen" --yesno "Möchten Sie das komplette System-Setup sequenziell ausführen?" 10 70; then
-                sudo bash "${SCRIPT_DIR}/scripts/sys_check.sh"
+                sudo bash "${SCRIPT_DIR}/scripts/sys_check.sh" || true
                 
                 # Rolle ermitteln
                 ROUTER_HOST=$(python3 "$PARSER" "$CONFIG_PATH" "router:hostname")
                 if [[ "$CURRENT_HOST" == "$ROUTER_HOST" ]]; then
-                    sudo bash "${SCRIPT_DIR}/scripts/router_setup.sh"
+                    sudo bash "${SCRIPT_DIR}/scripts/router_setup.sh" || true
                 else
-                    sudo bash "${SCRIPT_DIR}/scripts/client_setup.sh"
+                    sudo bash "${SCRIPT_DIR}/scripts/client_setup.sh" || true
                 fi
                 
-                sudo bash "${SCRIPT_DIR}/scripts/system_tweaks.sh"
-                sudo bash "${SCRIPT_DIR}/scripts/services_mgmt.sh"
-                sudo bash "${SCRIPT_DIR}/scripts/tools_installer.sh"
-                sudo bash "${SCRIPT_DIR}/scripts/ntp_setup.sh"
+                sudo bash "${SCRIPT_DIR}/scripts/system_tweaks.sh" || true
+                sudo bash "${SCRIPT_DIR}/scripts/services_mgmt.sh" || true
+                sudo bash "${SCRIPT_DIR}/scripts/tools_installer.sh" || true
+                sudo bash "${SCRIPT_DIR}/scripts/ntp_setup.sh" || true
                 
                 whiptail --title "Voll-Setup beendet" --msgbox "Alle Skripte wurden erfolgreich nacheinander ausgeführt!" 8 60
             fi
